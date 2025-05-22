@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Fake Job Detection</title>
+    
+    <style>
+     @keyframes fadeInBody {
+    from { opacity: 0; }
+    to { opacity: 1; }
+    }
+
+    @keyframes animatedGradient {
+        0% {
+        background-position: 0% 50%;
+        }
+        50% {
+        background-position: 100% 50%;
+        }
+        100% {
+        background-position: 0% 50%;
+        }
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(-45deg, #7ea2d9, hwb(201 69% 4%), #cbccd2c8, #97b8b9);
+        background-size: 400% 400%;
+        animation: fadeInBody 1s ease-in, animatedGradient 12s ease infinite;
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        width: 90%;
+        max-width: 450px;
+        animation: slideUp 0.8s ease-out;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    }
+
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        transform: scale(1.02);
+    }
+
+    input[type="submit"] {
+        margin-top: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .result {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #222;
+        text-align: center;
+        opacity: 0;
+        animation: fadeInResult 1s ease forwards;
+        animation-delay: 1s;
+    }
+
+    @keyframes fadeInResult {
+        to {
+        opacity: 1;
+        }
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center;">Fake Job Detection</h2>
+
+        <form method="POST" action="/predict">
+            <label>Job Title:</label>
+            <input type="text" name="title" placeholder="Enter job title" value="{{ request.form.title }}" required>
+
+            <label>Job Location:</label>
+            <input type="text" name="location" placeholder="Enter location" value="{{ request.form.location }}" required>
+
+            <label>Company Profile:</label>
+            <textarea name="company_profile" rows="3" placeholder="Enter company profile">{{ request.form.company_profile }}</textarea>
+
+            <label>Job Description:</label>
+            <textarea name="description" rows="4" placeholder="Enter job description" required>{{ request.form.description }}</textarea>
+            
+            <input type="submit" value="submit">
+        </form>
+
+        {% if prediction is not none %}
+        <div class="result">
+            <strong style="color: {{ 'red' if prediction[0] == 1 else 'green' }};">
+                {{ 'FAKE' if prediction[0] == 1 else 'REAL' }}
+            </strong>
+            
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
